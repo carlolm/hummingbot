@@ -24,20 +24,14 @@ jobs:
         run: |
           echo "::add-path::$HOME/miniconda3/bin"
           echo "::add-path::$HOME/miniconda3/Scripts"
-          source /usr/share/miniconda/etc/profile.d/conda.sh
-          conda init
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
-          source /usr/share/miniconda/etc/profile.d/conda.sh
           ./install
-          conda env list
-          conda activate hummingbot
-          conda env list
       - name: Compile Hummingbot
         shell: bash
         run: |
-          conda env list
+          source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           conda env list
           ./compile
