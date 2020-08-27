@@ -25,6 +25,7 @@ jobs:
           echo "::add-path::$HOME/miniconda3/bin"
           echo "::add-path::$HOME/miniconda3/Scripts"
           source /usr/share/miniconda/etc/profile.d/conda.sh
+          conda init
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
