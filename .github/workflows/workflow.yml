@@ -27,6 +27,7 @@ jobs:
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
+          conda init
           ls $HOME/miniconda3/etc
           ls $HOME/miniconda3/etc/profile.d
           source $HOME/miniconda3/etc/profile.d/conda.sh
