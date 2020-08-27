@@ -16,6 +16,9 @@ jobs:
           MINICONDA_FILENAME=Miniconda3-latest-Linux-x86_64.sh
           curl -o $MINICONDA_FILENAME "https://repo.continuum.io/miniconda/$MINICONDA_FILENAME"
           bash ${MINICONDA_FILENAME} -b -f -p $HOME/miniconda3
+          which conda
+          which python
+          python --version
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
