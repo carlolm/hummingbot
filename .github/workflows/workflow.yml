@@ -25,15 +25,11 @@ jobs:
           echo "::add-path::$HOME/miniconda3/bin"
           echo "::add-path::$HOME/miniconda3/Scripts"
           source /usr/share/miniconda/etc/profile.d/conda.sh
-          which conda
-          export CONDA = "$(which conda)"
-          echo $CONDA
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
           ./install
-          conda activate hummingbot
-          sh "$CONDA hummingbot"
+          /usr/share/miniconda/condabin/conda activate hummingbot
       - name: Compile Hummingbot
         shell: bash
         run: ./compile
