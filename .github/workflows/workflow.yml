@@ -19,6 +19,8 @@ jobs:
           MINICONDA_FILENAME=Miniconda3-latest-Linux-x86_64.sh
           curl -o $MINICONDA_FILENAME "https://repo.continuum.io/miniconda/$MINICONDA_FILENAME"
           bash ${MINICONDA_FILENAME} -b -f -p $HOME/miniconda3
+          source /usr/share/miniconda/etc/profile.d/conda.sh
+          conda install -c anaconda nose
       - name: Setup paths
         shell: bash
         run: |
@@ -34,8 +36,10 @@ jobs:
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
-          conda env list
           ./compile
       - name: Run stable tests
         shell: bash
-        run: nosetests -d -v test/test*.py
+        run: |
+          source /usr/share/miniconda/etc/profile.d/conda.sh
+          conda activate hummingbot
+          nosetests -d -v test/test*.py
