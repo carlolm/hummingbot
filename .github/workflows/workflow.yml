@@ -27,6 +27,7 @@ jobs:
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
+          source /usr/share/miniconda/etc/profile.d/conda.sh
           ./install
       - name: Compile Hummingbot
         shell: bash
