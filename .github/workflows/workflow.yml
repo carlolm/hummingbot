@@ -8,12 +8,26 @@ jobs:
   build_hummingbot:
     name: HB Linux
     runs-on: "ubuntu-latest"
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - name: Install Miniconda
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-python-dependencies
+        with:
+          path: ~/.development
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/environmment-linux.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install Miniconda and nose
         shell: bash
         run: |
           MINICONDA_FILENAME=Miniconda3-latest-Linux-x86_64.sh
@@ -21,11 +35,13 @@ jobs:
           bash ${MINICONDA_FILENAME} -b -f -p $HOME/miniconda3
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda install -c anaconda nose
-      - name: Setup paths
-        shell: bash
-        run: |
-          echo "::add-path::$HOME/miniconda3/bin"
-          echo "::add-path::$HOME/miniconda3/Scripts"
+
+      # - name: Setup paths
+      #   shell: bash
+      #   run: |
+      #     echo "::add-path::$HOME/miniconda3/bin"
+      #     echo "::add-path::$HOME/miniconda3/Scripts"
+
       - name: Install Hummingbot
         shell: bash -l {0}
         run: |
