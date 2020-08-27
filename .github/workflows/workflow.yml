@@ -9,6 +9,7 @@ jobs:
     name: HB Linux
     runs-on: "ubuntu-latest"
     steps:
+      - uses: actions/checkout@v2
       - name: Install Miniconda
         shell: bash
         run: |
@@ -23,6 +24,6 @@ jobs:
       - name: Compile Hummingbot
         shell: bash
         run: ./compile
-      - name: Ru stable tests
+      - name: Run stable tests
         shell: bash
         run: nosetests -d -v test/test*.py
