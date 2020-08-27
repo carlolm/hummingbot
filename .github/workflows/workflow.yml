@@ -33,7 +33,9 @@ jobs:
           conda activate hummingbot
       - name: Compile Hummingbot
         shell: bash
-        run: ./compile
+        run: |
+          conda activate hummingbot
+          ./compile
       - name: Run stable tests
         shell: bash
         run: nosetests -d -v test/test*.py
