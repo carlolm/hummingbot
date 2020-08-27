@@ -28,7 +28,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda init
-          source /usr/share/miniconda/etc/profile.d/conda.csh
+          source /usr/share/miniconda/etc/profile.d/conda.sh
           which conda
           which python
           python --version
