@@ -30,11 +30,15 @@ jobs:
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
           ./install
+          conda env list
           conda activate hummingbot
+          conda env list
       - name: Compile Hummingbot
         shell: bash
         run: |
+          conda env list
           conda activate hummingbot
+          conda env list
           ./compile
       - name: Run stable tests
         shell: bash
