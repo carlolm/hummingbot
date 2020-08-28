@@ -1,8 +1,9 @@
-FROM docker.io/project31/aarch64-alpine-qemu:3.5
-RUN [ “cross-build-start” ]
+cat Dockerfile.arm
 
 FROM arm64v8/python:3.7.8-slim-buster
 LABEL maintainer="CoinAlpha, Inc. <dev@coinalpha.com>"
+
+COPY qemu-arm-static /usr/bin/
 
 # Build arguments
 ARG BRANCH=""
@@ -62,5 +63,3 @@ RUN python setup.py build_ext --inplace -j 8 && \
 
 SHELL [ "/bin/bash", "-lc" ]
 CMD python bin/hummingbot_quickstart.py
-
-RUN [ "cross-build-end" ]  
