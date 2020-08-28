@@ -1,6 +1,6 @@
 FROM arm64v8/python:3.7.8-slim-buster
 COPY qemu-arm-static /usr/bin
-RUN [ "/usr/bin/qemu-arm-static", "/bin/echo", "Hello from ARM container" ]
+RUN [ "/usr/bin/qemu-arm-static", "/bin/sh", "-c", "/bin/echo Hello from ARM container" ]  
 
 LABEL maintainer="CoinAlpha, Inc. <dev@coinalpha.com>"
 
