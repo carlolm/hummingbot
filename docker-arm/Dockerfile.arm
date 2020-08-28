@@ -1,6 +1,6 @@
 FROM arm64v8/python:3.7.8-slim-buster
 COPY qemu-arm-static /usr/bin
-RUN [ "/usr/bin/qemu-arm-static", "/bin/sh", "-c", "/bin/echo Hello from ARM container" ]  
+RUN [ "cross-build-start" ]
 
 LABEL maintainer="CoinAlpha, Inc. <dev@coinalpha.com>"
 
@@ -23,7 +23,6 @@ ENV WALLET=${WALLET}
 ENV CONFIG_PASSWORD=${CONFIG_PASSWORD}
 
 # Create mount points
-RUN [ "/usr/bin/qemu-arm-static", "/bin/sh", "-c", "/bin/mkdir", "/conf /logs /data /scripts" ]
 RUN mkdir /conf /logs /data /scripts
 VOLUME /conf /logs /data /scripts
 
@@ -63,3 +62,5 @@ RUN python setup.py build_ext --inplace -j 8 && \
 
 SHELL [ "/bin/bash", "-lc" ]
 CMD python bin/hummingbot_quickstart.py
+
+RUN [ "cross-build-end" ]  
