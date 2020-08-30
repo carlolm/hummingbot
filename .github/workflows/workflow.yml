@@ -28,7 +28,7 @@ jobs:
         uses: actions/cache@v2
         env:
           # Increase this value to mannually reset cache if setup/environment-linux.yml has not changed
-          CONDA_CACHE_NUMBER: 0
+          CONDA_CACHE_NUMBER: 1
         with:
           path: |
             /home/runner/conda_pkgs_dir/
