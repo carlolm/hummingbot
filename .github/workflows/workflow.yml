@@ -67,7 +67,7 @@ jobs:
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda info --envs
           conda activate hummingbot
-          conda export env
+          conda env export
           ./compile
       - name: Run stable tests
         if: steps.program-changes.outputs.cache-hit != 'true' || steps.conda-dependencies.outputs.cache-hit != 'true'
