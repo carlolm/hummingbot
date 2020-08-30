@@ -20,11 +20,14 @@ jobs:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('setup/environment-linux.yml') }}
       - name: Cache build
+        id: compile-hb
         uses: actions/cache@v1
         env:
           CACHE_NUMBER: 0
         with:
-          path: build
+          path: |
+            build
+            hummingbot
           key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', '') }}
 
       - uses: goanpeca/setup-miniconda@v1
@@ -37,6 +40,7 @@ jobs:
 
       - name: Compile Hummingbot
         shell: bash
+        if: steps.compile-hb.outputs.cache-hit != 'true'
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
