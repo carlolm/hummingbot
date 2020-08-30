@@ -55,11 +55,11 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-pip-     
 
-      - name: Install Hummingbot
-        shell: bash -l {0}
-        run: |
-          echo "source /usr/share/miniconda/etc/profile.d/conda.sh"
-          ./install
+      # - name: Install Hummingbot
+      #   shell: bash -l {0}
+      #   run: |
+      #     echo "source /usr/share/miniconda/etc/profile.d/conda.sh"
+      #     ./install
       - name: Compile Hummingbot
         shell: bash
         run: |
