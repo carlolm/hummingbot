@@ -26,9 +26,9 @@ jobs:
       # Create folders for environment and set permissions, required for restoring cache
       - name: Fix folder permissions for restoring cache
         run: |
-          mkdir /usr/share/miniconda
-          mkdir /usr/share/miniconda/envs
-          mkdir /usr/share/miniconda/envs/hummingbot
+          mkdir -p /usr/share/miniconda
+          mkdir -p /usr/share/miniconda/envs
+          mkdir -p /usr/share/miniconda/envs/hummingbot
           sudo chmod -R a+wrx /usr/share/miniconda
 
       # Check for setup/environmnet-linux.yml changes
