@@ -29,7 +29,9 @@ jobs:
           # Increase this value to reset cache if setup/environment-linux.yml has not changed
           CONDA_CACHE_NUMBER: 0
         with:
-          path: /usr/share/miniconda/envs/hummingbot
+          path: |
+            /home/runner/conda_pkgs_dir/
+            /usr/share/miniconda/envs/hummingbot
           key: ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('setup/environment-linux.yml') }}
 
       # Only run remaining steps if there is a change to the core code
