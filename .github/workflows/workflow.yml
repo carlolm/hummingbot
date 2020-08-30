@@ -63,12 +63,12 @@ jobs:
       - name: Compile Hummingbot
         shell: bash
         run: |
-          echo "source /usr/share/miniconda/etc/profile.d/conda.sh"
+          source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           ./compile
       - name: Run stable tests
         shell: bash
         run: |
-          echo "source /usr/share/miniconda/etc/profile.d/conda.sh"
+          source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           nosetests -d -v test/test*.py
