@@ -23,12 +23,12 @@ jobs:
         id: compile-hb
         uses: actions/cache@v1
         env:
-          CACHE_NUMBER: 0
+          BUILD_CACHE_NUMBER: 0
         with:
           path: |
             build
             hummingbot
-          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', '') }}
+          key: ${{ runner.os }}-build-${{ env.BUILD_CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', '') }}
 
       - uses: goanpeca/setup-miniconda@v1
         with:
