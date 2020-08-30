@@ -23,13 +23,9 @@ jobs:
           path: README.md # placeholder file
           key: ${{ runner.os }}-build-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', 'build/*', '**/*.py', '**/*.py*', '**/*.pxd') }}
       
-      # Create folders for environment and set permissions, required for restoring cache
-      - name: Fix folder permissions for restoring cache
-        run: |
-          mkdir -p /usr/share/miniconda
-          mkdir -p /usr/share/miniconda/envs
-          mkdir -p /usr/share/miniconda/envs/hummingbot
-          sudo chmod -R a+wrx /usr/share/miniconda
+      # Remove envs directory if exists to prevent bin/tar restore errors
+      - name: Remove envs directory
+        run: rm -Rf /usr/share/miniconda/envs
 
       # Check for setup/environmnet-linux.yml changes
       - name: Cache conda dependencies
