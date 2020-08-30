@@ -24,7 +24,7 @@ jobs:
 
       # Only run remaining steps if there is a change to the core code
       - uses: goanpeca/setup-miniconda@v1
-        if: steps.program-changes.outputs.cache-hit == 'true'
+        if: steps.program-changes.outputs.cache-hit != 'true'
         with:
           activate-environment: hummingbot
           python-version: 3.7
@@ -33,13 +33,13 @@ jobs:
 
       - name: Compile Hummingbot
         shell: bash
-        if: steps.program-changes.outputs.cache-hit == 'true'
+        if: steps.program-changes.outputs.cache-hit != 'true'
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           ./compile
       - name: Run stable tests
-        if: steps.program-changes.outputs.cache-hit == 'true'
+        if: steps.program-changes.outputs.cache-hit != 'true'
         shell: bash
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
