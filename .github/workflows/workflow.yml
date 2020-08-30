@@ -17,35 +17,49 @@ jobs:
         id: program-changes
         uses: actions/cache@v2
         env:
-          # Increase this value to mannually reset cache if program files have not changed
+          # Increase this value to manually reset cache if program files have not changed
           CACHE_NUMBER: 0
         with:
           path: hummingbot
           key: ${{ runner.os }}-build-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', 'build/*', '**/*.py', '**/*.py*', '**/*.pxd') }}
       
+      # Check for setup/environmnet-linux.yml changes
       - name: Cache conda dependencies
         id: conda-dependencies
         uses: actions/cache@v2
         env:
-          # Increase this value to mannually reset cache if setup/environment-linux.yml has not changed
+          # Increase this value to manually reset cache if setup/environment-linux.yml has not changed
           CONDA_CACHE_NUMBER: 1
         with:
           path: |
             /home/runner/conda_pkgs_dir/
-            /usr/share/miniconda/
+            /usr/share/miniconda/envs
           key: ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('setup/environment-linux.yml') }}
 
-      # Restore cached conda dependencies if setup/environment-linux.yml is changed
-      - uses: goanpeca/setup-miniconda@v1
-        if: steps.conda-dependencies.outputs.cache-hit != 'true'
+      # Install python/conda to check if core code has changed
+      - uses: actions/setup-python@v2
+        if: steps.program-changes.outputs.cache-hit != 'true' || steps.conda-dependencies.outputs.cache-hit != 'true'
         with:
-          activate-environment: hummingbot
-          python-version: 3.7
-          channel-priority: true
-          environment-file: setup/environment-linux.yml
-          use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+          python-version: 3.x
+      - name: Install Miniconda and nose
+        if: steps.program-changes.outputs.cache-hit != 'true' || steps.conda-dependencies.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          MINICONDA_FILENAME=Miniconda3-latest-Linux-x86_64.sh
+          curl -o $MINICONDA_FILENAME "https://repo.continuum.io/miniconda/$MINICONDA_FILENAME"
+          bash ${MINICONDA_FILENAME} -b -f -p $HOME/miniconda3
+          source /usr/share/miniconda/etc/profile.d/conda.sh
+          conda install -c anaconda nose
+        
+      # Install hummingbot env if environment-linux.yml has changed
+      - name: Install Hummingbot
+        if: steps.program-changes.outputs.cache-hit != 'true'
+        shell: bash -l {0}
+        run: |
+          source /usr/share/miniconda/etc/profile.d/conda.sh
+          ./install
   
-      # Only run remaining steps if there is a change to the core code
+      # Compile and run tests if code has changed
       - name: Compile Hummingbot
         shell: bash
         if: steps.program-changes.outputs.cache-hit != 'true' || steps.conda-dependencies.outputs.cache-hit != 'true'
@@ -53,6 +67,7 @@ jobs:
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda info --envs
           conda activate hummingbot
+          conda export env
           ./compile
       - name: Run stable tests
         if: steps.program-changes.outputs.cache-hit != 'true' || steps.conda-dependencies.outputs.cache-hit != 'true'
