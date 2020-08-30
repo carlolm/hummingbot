@@ -44,7 +44,7 @@ def encrypted_file_exists(config_key: str):
 
 def encrypt_n_save_config_value(config_key, config_value, password):
     """
-    encrypt configuration value and store in a file, file name is derived from config_var key (in conf folder)
+    encrypt configuration value and store in a file, file name is derived from config_var key (in conf folder)**test**
     """
     password_bytes = password.encode()
     message = config_value.encode()
