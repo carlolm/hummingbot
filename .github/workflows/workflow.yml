@@ -11,41 +11,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Cache conda
-        uses: actions/cache@v1
-        env:
-          # Increase this value to reset cache if setup/environment-linux.yml has not changed
-          CACHE_NUMBER: 0
-        with:
-          path: ~/conda_pkgs_dir
-          key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('setup/environment-linux.yml') }}
-      - name: Cache build
-        id: compile-hb
+    
+      # Use cache's hashFiles function to check for changes in core code
+      - name: Check for core changes
+        id: program-changes
         uses: actions/cache@v1
         env:
           BUILD_CACHE_NUMBER: 0
         with:
-          path: |
-            build
-            hummingbot
-          key: ${{ runner.os }}-build-${{ env.BUILD_CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', '') }}
+          path: hummingbot
+          key: ${{ runner.os }}-build-${{ env.BUILD_CACHE_NUMBER }}-${{ hashFiles('setup/*', 'hummingbot/*', 'build/*', '**/*.py', '**/*.py*', '**/*.pxd') }}
 
+      # Only run remaining steps if there is a change to the core code
       - uses: goanpeca/setup-miniconda@v1
+        if: steps.program-changes.outputs.cache-hit == 'true'
         with:
           activate-environment: hummingbot
           python-version: 3.7
           channel-priority: true
           environment-file: setup/environment-linux.yml
-          use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
       - name: Compile Hummingbot
         shell: bash
-        if: steps.compile-hb.outputs.cache-hit != 'true'
+        if: steps.program-changes.outputs.cache-hit == 'true'
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           ./compile
       - name: Run stable tests
+        if: steps.program-changes.outputs.cache-hit == 'true'
         shell: bash
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
