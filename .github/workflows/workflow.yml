@@ -27,10 +27,10 @@ jobs:
         uses: actions/cache@v2
         env:
           # Increase this value to reset cache if setup/environment-linux.yml has not changed
-          DEPENDENCIES_CACHE_NUMBER: 0
+          CONDA_CACHE_NUMBER: 0
         with:
           path: /usr/share/miniconda/envs/hummingbot
-          key: ${{ runner.os }}-conda-${{ env.DEPENDENCIES_CACHE_NUMBER }}-${{ hashFiles('setup/environment-linux.yml') }}
+          key: ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('setup/environment-linux.yml') }}
 
       # Only run remaining steps if there is a change to the core code
       # Restore cached conda dependencies if setup/environment-linux.yml is unchanged
@@ -41,7 +41,8 @@ jobs:
           python-version: 3.7
           channel-priority: true
           environment-file: setup/environment-linux.yml
-
+          use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+  
       - name: Compile Hummingbot
         shell: bash
         if: steps.program-changes.outputs.cache-hit != 'true'
@@ -55,5 +56,4 @@ jobs:
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
-          conda env export
           nosetests -d -v test/test*.py
