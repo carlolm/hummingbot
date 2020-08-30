@@ -45,9 +45,11 @@ jobs:
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           ./compile
+        use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
       - name: Run stable tests
         shell: bash
         run: |
           source /usr/share/miniconda/etc/profile.d/conda.sh
+          conda env export
           conda activate hummingbot
           nosetests -d -v test/test*.py
