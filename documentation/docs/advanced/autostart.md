@@ -122,3 +122,4 @@ More information on strategy can be found in [Strategy](/strategies).
 More information on configuration file name can be found in [Configuring Hummingbot](/operation/configuration).  
 More information on password can be found in [Create a secure password](/quickstart/configure/#create-a-secure-password).  
 
+MORE DOCS CHANGES
