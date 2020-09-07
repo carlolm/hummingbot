@@ -1,7 +1,8 @@
+FROM ubuntu
+
 FROM arm64v8/python:3.7.8-slim-buster
 LABEL maintainer="CoinAlpha, Inc. <dev@coinalpha.com>"
 
-RUN uname -a
 COPY qemu-arm-static /usr/bin
 
 # Build arguments
