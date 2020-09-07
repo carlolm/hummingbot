@@ -1,14 +1,7 @@
 FROM arm64v8/python:3.7.8-slim-buster
 LABEL maintainer="CoinAlpha, Inc. <dev@coinalpha.com>"
 
-
-
-# Create mount points
-RUN mkdir /conf /logs /data /scripts
-VOLUME /conf /logs /data /scripts
-
-
-COPY qemu-arm-static /usr/bin/
+COPY qemu-arm-static /usr/bin
 
 # Build arguments
 ARG BRANCH=""
