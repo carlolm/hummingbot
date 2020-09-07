@@ -1,6 +1,8 @@
 name: ci
 
 on:
+  push:
+    branches: [ master, development ]
   pull_request:
     branches: [ master, development ]
 
@@ -21,7 +23,11 @@ jobs:
           CACHE_NUMBER: 0
         with:
           path: README.md # placeholder file
+<<<<<<< HEAD
           key: ${{ runner.os }}-build-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', 'bin/*', '**/*.py', '**/*.py*', '**/*.pxd') }}
+=======
+          key: ${{ runner.os }}-build-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', '**/*.py', '**/*.py*', '**/*.pxd', 'test/*') }}
+>>>>>>> 4c8b430b0f8690ab62a4e73eaeefa4bca6b9089f
       
       # Remove envs directory if exists to prevent bin/tar restore errors
       - name: Remove envs directory
@@ -80,6 +86,8 @@ jobs:
           source /usr/share/miniconda/etc/profile.d/conda.sh
           conda activate hummingbot
           nosetests -d -v test/test*.py
+      
+      # Notify results to discord
       - uses: actions/setup-ruby@v1
       - name: Send Webhook Notification
         if: always()
@@ -89,6 +97,6 @@ jobs:
           HOOK_OS_NAME: ${{ runner.os }}
           WORKFLOW_NAME: ${{ github.workflow }}
         run: |
-          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          git clone --depth 1 https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
           bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
         shell: bash
