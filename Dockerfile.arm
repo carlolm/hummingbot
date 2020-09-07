@@ -21,6 +21,10 @@ ENV CONFIG_FILE_NAME=${CONFIG_FILE_NAME}
 ENV WALLET=${WALLET}
 ENV CONFIG_PASSWORD=${CONFIG_PASSWORD}
 
+# Create mount points
+RUN mkdir /conf /logs /data /scripts
+VOLUME /conf /logs /data /scripts
+
 # Copy files
 COPY bin/ bin/
 COPY hummingbot/ hummingbot/
