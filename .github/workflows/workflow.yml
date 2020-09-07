@@ -23,11 +23,7 @@ jobs:
           CACHE_NUMBER: 0
         with:
           path: README.md # placeholder file
-<<<<<<< HEAD
-          key: ${{ runner.os }}-build-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', 'bin/*', '**/*.py', '**/*.py*', '**/*.pxd') }}
-=======
           key: ${{ runner.os }}-build-${{ env.CACHE_NUMBER }}-${{ hashFiles('hummingbot/*', '**/*.py', '**/*.py*', '**/*.pxd', 'test/*') }}
->>>>>>> 4c8b430b0f8690ab62a4e73eaeefa4bca6b9089f
       
       # Remove envs directory if exists to prevent bin/tar restore errors
       - name: Remove envs directory
