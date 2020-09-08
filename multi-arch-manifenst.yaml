@@ -1,0 +1,21 @@
+image: carlol/hummingbot:latest
+manifests:
+  - image: carlol/hummingbot:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: carlol/hummingbot:arm32v5
+    platform:
+      architecture: arm
+      os: linux
+      variant: v5
+  - image: carlol/hummingbot:arm32v7
+    platform:
+      architecture: arm
+      os: linux
+      variant: v7
+  - image: carlol/hummingbot:arm64v8
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
